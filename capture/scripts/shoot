@@ -1,0 +1,183 @@
+#!/bin/sh
+# shoot — start building and recording a project in one command.
+#
+#   shoot corner-bracket
+#
+# Takes go in the working folder's inbox/.
+# Finds the project on joelshetler.com or starts a draft, serves the site with
+# live reload, opens Ghostty on the left with Claude in the project folder,
+# opens its app on the right, mirrors the phone if one is on USB, points OBS at
+# those windows and starts recording. Run it again later to resume: the page
+# stays, Claude continues, and a new take starts. Anything already running is
+# left alone. Layout numbers are under "Shoot" in rig/setup.md.
+set -u
+REPO="$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)"
+OBS="$REPO/capture/scripts/obs.py"
+WINDOW_ID="$REPO/capture/scripts/window-id"
+SITE="$HOME/repos/joelshetler.com"
+WORK="$HOME/reps/video"
+PORT=1114
+
+# Where the windows open, in points on the laptop screen. OBS follows them from
+# there, but their sizes set their sizes in the frame: change those here and in
+# $WORK/rig/obs/LongTake.json together. Ghostty counts its y from under the menu
+# bar and sizes itself in cells.
+LEFT_X=0 RIGHT_X=864 TOP_Y=37 WIDTH=864 CHROME_H=1010
+COLS=82 ROWS=44
+
+# On stderr, so stdout stays just the take folder.
+print_keys() {
+    cat >&2 <<'KEYS'
+ctrl-opt-cmd  1  terminal, you, page
+              2  terminal, page
+              3  terminal, you, phone
+              4  terminal, phone
+              P  pause or resume
+              S  stop
+KEYS
+}
+
+[ $# -eq 1 ] || { echo "usage: shoot NAME" >&2; exit 2; }
+name=$1
+case $name in
+    *[!a-z0-9-]*|-*|"") echo "shoot: NAME is lowercase letters, digits and hyphens" >&2; exit 2 ;;
+esac
+for tool in zola claude; do
+    command -v "$tool" >/dev/null 2>&1 || { echo "shoot: $tool not found" >&2; exit 1; }
+done
+[ -d "$WORK/inbox" ] || { echo "shoot: no $WORK/inbox" >&2; exit 1; }
+
+if pgrep -x OBS >/dev/null; then
+    case $(python3 "$OBS" GetRecordStatus 2>/dev/null) in
+        *'"outputActive": true'*) echo "shoot: already recording, left it alone" >&2; print_keys; exit 0 ;;
+    esac
+fi
+
+# A project is wherever its folder is. A new one starts in drafting with a
+# write-up and an app. See content/drafting/CLAUDE.md in the site.
+project=$(ls -d "$SITE"/content/*/"$name" 2>/dev/null | head -n 1)
+claude_cmd="claude --continue || claude"
+if [ -z "$project" ]; then
+    project="$SITE/content/drafting/$name"
+    mkdir -p "$project/app" || exit 1
+    title=$(printf '%s' "$name" | tr '-' ' ' | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }')
+    printf '+++\ntitle = "%s"\ndate = %s\ndraft = true\n[extra]\napp = true\n+++\n' "$title" "$(date +%F)" > "$project/index.md"
+    printf '+++\ntitle = "%s"\ntemplate = "app.html"\ndraft = true\n+++\n' "$title" > "$project/app/index.md"
+    claude_cmd="claude"
+fi
+
+# A date in the folder name is what cut/scripts/ingest.py reads. Later takes of
+# the same project go in the folder the first one made.
+take_dir=$(ls -d "$WORK"/inbox/*" $name" 2>/dev/null | tail -n 1)
+[ -n "$take_dir" ] || take_dir="$WORK/inbox/$(date +%F) $name"
+mkdir -p "$take_dir" || exit 1
+
+if ! lsof -nP -iTCP:"$PORT" -sTCP:LISTEN >/dev/null 2>&1; then
+    (cd "$SITE" && exec nohup zola serve --drafts -p "$PORT" -o "${TMPDIR:-/tmp}/shoot-site" --force \
+        </dev/null >"${TMPDIR:-/tmp}/shoot-site.log" 2>&1) </dev/null >/dev/null 2>&1 &
+    tries=0
+    until lsof -nP -iTCP:"$PORT" -sTCP:LISTEN >/dev/null 2>&1; do
+        tries=$((tries + 1))
+        [ "$tries" -lt 60 ] || { echo "shoot: zola didn't start; see ${TMPDIR:-/tmp}/shoot-site.log" >&2; exit 1; }
+        sleep 0.5
+    done
+fi
+
+# Prints the window number of the process whose pgrep arguments are given, once
+# it has a window.
+window_of() {
+    tries=0
+    while [ "$tries" -lt 40 ]; do
+        pid=$(pgrep "$@" | head -n 1)
+        if [ -n "$pid" ] && "$WINDOW_ID" "$pid" 2>/dev/null; then
+            return 0
+        fi
+        tries=$((tries + 1))
+        sleep 0.5
+    done
+    return 1
+}
+
+url="http://127.0.0.1:$PORT/${project#"$SITE/content/"}/"
+[ ! -d "$project/app" ] || url="${url}app/"
+chrome_dir="${TMPDIR:-/tmp}/shoot-chrome/$name"
+opened=
+if ! pgrep -f "user-data-dir=$chrome_dir" >/dev/null; then
+    opened=yes
+    open -na "Google Chrome" --args --user-data-dir="$chrome_dir" \
+        --no-first-run --no-default-browser-check --app="$url" \
+        --window-position="$RIGHT_X,$TOP_Y" --window-size="$WIDTH,$CHROME_H"
+fi
+
+# The mirror outlives this script, so its complaints go to a file.
+phone_err=
+if command -v adb >/dev/null 2>&1 && adb devices | awk -F'\t' 'NF == 2' | grep -q . && ! pgrep -x scrcpy >/dev/null; then
+    opened=yes
+    phone_err=$(mktemp)
+    nohup "$REPO/capture/scripts/phone.sh" </dev/null >/dev/null 2>"$phone_err" &
+fi
+
+# The phone reaches the Mac's preview through USB. Live reload shares the port.
+if command -v adb >/dev/null 2>&1 && adb devices | awk -F'\t' 'NF == 2' | grep -q .; then
+    adb reverse "tcp:$PORT" "tcp:$PORT" >/dev/null 2>&1 || true
+fi
+
+# Last, so the keyboard lands in the terminal.
+if ! pgrep -f "Ghostty.*--working-directory=$project" >/dev/null; then
+    opened=yes
+    open -na Ghostty --args --working-directory="$project" \
+        --window-position-x="$LEFT_X" --window-position-y=0 \
+        --window-width="$COLS" --window-height="$ROWS" --font-size=16 --window-padding-x=16 --window-padding-y=12 \
+        --background=000000 --foreground=ffffff --macos-titlebar-style=hidden --window-save-state=never --macos-window-shadow=false \
+        --initial-command="/bin/zsh -lc '$claude_cmd; exec zsh -l'"
+fi
+
+system_profiler SPUSBDataType 2>/dev/null | grep -q "Shure MV7" ||
+    echo "shoot: MV7+ is not on USB, so this take has no voice until it's plugged in." >&2
+
+page_window=$(window_of -f "MacOS/Google Chrome .*user-data-dir=$chrome_dir") ||
+    { echo "shoot: the page's window didn't open" >&2; exit 1; }
+terminal_window=$(window_of -f "Ghostty.*--working-directory=$project") ||
+    { echo "shoot: the terminal's window didn't open" >&2; exit 1; }
+phone_window=
+if [ -n "$phone_err" ] || pgrep -x scrcpy >/dev/null; then
+    phone_window=$(window_of -x scrcpy) || {
+        echo "shoot: no phone mirror, so the phone scenes are empty." >&2
+        [ -z "$phone_err" ] || cat "$phone_err" >&2
+    }
+fi
+[ -z "$phone_err" ] || rm -f "$phone_err"
+
+# OBS only accepts a window that was open when it started, so it restarts when
+# there's a new one. Its sources hold window numbers, which change with every
+# window, so they get today's on every run.
+if [ -n "$opened" ] && pgrep -x OBS >/dev/null; then
+    osascript -e 'quit app "OBS"' 2>/dev/null
+    tries=0
+    while pgrep -x OBS >/dev/null; do
+        tries=$((tries + 1))
+        [ "$tries" -lt 40 ] || { echo "shoot: OBS didn't quit" >&2; exit 1; }
+        sleep 0.5
+    done
+fi
+pgrep -x OBS >/dev/null || open -ga OBS
+tries=0
+until python3 "$OBS" GetVersion >/dev/null 2>&1; do
+    tries=$((tries + 1))
+    [ "$tries" -lt 60 ] || { echo "shoot: OBS isn't answering on its websocket" >&2; exit 1; }
+    sleep 0.5
+done
+
+point() {
+    python3 "$OBS" SetInputSettings "{\"inputName\": \"$1\", \"inputSettings\": {\"window\": $2}, \"overlay\": true}" >/dev/null
+}
+point Terminal "$terminal_window" || exit 1
+point Page "$page_window" || exit 1
+[ -z "$phone_window" ] || point Mirror "$phone_window" || exit 1
+
+dir_json=$(python3 -c 'import json, sys; print(json.dumps({"recordDirectory": sys.argv[1]}))' "$take_dir")
+python3 "$OBS" SetRecordDirectory "$dir_json" >/dev/null || exit 1
+python3 "$OBS" SetCurrentProgramScene '{"sceneName": "Shoot + Me"}' >/dev/null || exit 1
+python3 "$OBS" StartRecord >/dev/null || exit 1
+echo "$take_dir"
+print_keys

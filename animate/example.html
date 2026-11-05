@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>spike</title>
+<link rel="stylesheet" href="reveal/reset.css">
+<link rel="stylesheet" href="reveal/reveal.css">
+<style>
+:root { --bg:#fff; --ink:#000; --quiet:#8a8a8a; --mark:#c8102e; }
+.reveal { background:var(--bg); color:var(--ink); font:600 44px/1.2 "Helvetica Neue",Helvetica,Arial,sans-serif; letter-spacing:-0.03em; }
+.reveal .slides { text-align:left; }
+.reveal .slides section { height:100%; padding:80px 110px; box-sizing:border-box; }
+.big { font-size:420px; line-height:0.85; letter-spacing:-0.06em; font-variant-numeric:tabular-nums; }
+.small { font:400 30px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif; letter-spacing:0; }
+.quiet { color:var(--quiet); font-style:italic; }
+.spread { display:grid; grid-template-columns:1fr 1fr; height:100%; }
+.spread > div { padding:0 70px; }
+.spread > div + div { border-left:2px solid var(--ink); }
+.h { font-size:96px; line-height:1.1; margin:0 0 0.15em; }
+.h u { text-underline-offset:0.12em; text-decoration-thickness:0.06em; }
+.reveal .fragment.rise { opacity:0; transform:translateY(40px); transition:opacity .6s ease-out, transform .6s ease-out; }
+.reveal .fragment.rise.visible { opacity:1; transform:none; }
+.bar { height:14px; background:var(--ink); width:0; animation:grow 2.5s ease-in-out forwards; margin-top:40px; }
+@keyframes grow { to { width:100%; } }
+</style>
+<div class="reveal"><div class="slides">
+  <section data-auto-animate data-autoslide="1800">
+    <div class="big" data-id="n">55</div>
+    <div class="small">ms <span class="quiet">of drift per hour</span></div>
+  </section>
+  <section data-auto-animate data-autoslide="1200">
+    <div class="spread">
+      <div><div class="big" data-id="n" style="font-size:240px">55</div><div class="small">ms <span class="quiet">of drift per hour</span></div></div>
+      <div>
+        <p class="small fragment rise">Doing less more often is nice.</p>
+        <p class="small fragment rise">It exposes friction.</p>
+        <p class="small fragment rise">Reducing friction is good.</p>
+        <div class="bar fragment"></div>
+      </div>
+    </div>
+  </section>
+  <section data-autoslide="2500">
+    <p class="h fragment rise"><u>Radio</u> on a touchscreen</p>
+    <p class="h fragment rise"><u>Tides</u> on my wrist</p>
+  </section>
+</div></div>
+<script src="reveal/reveal.js"></script>
+<script>
+Reveal.initialize({ width:1920, height:1080, margin:0, minScale:1, maxScale:1, center:false, controls:false, progress:false,
+  hash:true, transition:'fade', autoSlide:1200, autoSlideStoppable:false, loop:false });
+</script>
+</html>

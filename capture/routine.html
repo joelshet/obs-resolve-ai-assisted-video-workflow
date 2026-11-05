@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My Routine</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: -apple-system, "Helvetica Neue", sans-serif; color: #111; background: #fff;
+         padding: 28px 34px; max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 2px; }
+  .sub { color: #555; font-size: 13px; margin-bottom: 20px; }
+  h2 { font-size: 15px; margin: 18px 0 8px; border-bottom: 2px solid #111; padding-bottom: 3px; }
+  kbd { display: inline-block; min-width: 22px; text-align: center; padding: 3px 6px;
+        border: 1.5px solid #111; border-radius: 6px; box-shadow: 0 1.5px 0 #111;
+        font: 700 12px/1 -apple-system, sans-serif; background: #fff; }
+  code { font: 600 12px/1.4 ui-monospace, Menlo, monospace; background: #f1f1f1;
+         padding: 2px 5px; border-radius: 4px; }
+  label { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; font-size: 14px;
+          line-height: 1.45; cursor: pointer; }
+  input[type=checkbox] { width: 15px; height: 15px; flex: none; position: relative; top: 2px;
+                         accent-color: #111; }
+  .recipe { border: 2.5px solid #111; border-radius: 10px; padding: 12px 16px; margin: 14px 0;
+            background: #f4f4f4; }
+  .recipe h2 { border: none; margin: 0 0 6px; padding: 0; font-size: 14px; }
+  .recipe ul { padding-left: 18px; font-size: 13px; line-height: 1.7; }
+  .recipe p { font-size: 13px; line-height: 1.5; margin-top: 6px; }
+  .foot { margin-top: 18px; font-size: 11.5px; color: #555; line-height: 1.5; }
+  @media print { body { padding: 0; } .recipe { background: #fff; } }
+</style>
+</head>
+<body>
+<h1>My Routine</h1>
+<div class="sub">One recording, start to ship · <code>shoot NAME</code> to build with AI, or hammer menu → record-session for a camera or older-scene take · details: ~/reps/video/rig/setup.md</div>
+
+<h2>Build with AI: shoot</h2>
+<label><input type="checkbox"> <span>MV7+ USB into the Mac. <code>shoot</code> warns if it's missing, then records anyway</span></label>
+<label><input type="checkbox"> Phone unlocked and on USB first, if it's in the video. Everything below its status bar records, home screen included</label>
+<label><input type="checkbox"> <span><code>shoot NAME</code> in a terminal, lowercase with hyphens. Recording starts by itself, on the page with you on screen</span></label>
+
+<div class="recipe">
+<h2>Keys</h2>
+<ul>
+<li><kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>⌘</kbd> <kbd>1</kbd> terminal, you, page</li>
+<li><kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>⌘</kbd> <kbd>2</kbd> terminal, page</li>
+<li><kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>⌘</kbd> <kbd>3</kbd> terminal, you, phone</li>
+<li><kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>⌘</kbd> <kbd>4</kbd> terminal, phone</li>
+<li><kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>⌘</kbd> <kbd>P</kbd> pause or resume, same file</li>
+<li><kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>⌘</kbd> <kbd>S</kbd> stop</li>
+</ul>
+<p>Move the terminal, page and mirror anywhere. They hold their places in the frame, and other apps stay out. Resizing one changes it in the frame. A window closed during a take stays blank until you stop and run <code>shoot NAME</code> again, which also resumes after a break: same page, Claude continues, new take in the same inbox folder. Stopping leaves the windows open; end the mirror by unplugging the phone or with <kbd>⌘</kbd> <kbd>Q</kbd> in its window.</p>
+<p>A take is one file with nothing to sync, so skip the camera lines, both claps, Auto Align and the backup-track mute. To publish, run <code>ship NAME SHELF</code>, which moves the draft to its shelf on the site.</p>
+</div>
+
+<h2>Camera take: before recording</h2>
+<label><input type="checkbox"> Camera dial to <kbd>C2</kbd>, USB-PD cable in — plug icon shows next to the battery</label>
+<label><input type="checkbox"> SD card has ~80 GB free per planned hour</label>
+<label><input type="checkbox"> MV7+ USB into the Mac; 3.5mm into the camera mic socket if the cable reaches</label>
+<label><input type="checkbox"> OBS open on the LongTake profile; the Samsung is the screen you'll work on</label>
+<label><input type="checkbox"> Do Not Disturb on; menu bar hidden or working app fullscreen</label>
+
+<h2>Older scenes: phone on screen</h2>
+<label><input type="checkbox"> Phone unlocked and on USB <b>before</b> clicking record-session. Plugged in late, click it again</label>
+<label><input type="checkbox"> The mirror sits on the right of the laptop screen and taps show as dots. Leave it there, because these scenes record that spot. Lid open, laptop display at its default size</label>
+<label><input type="checkbox"> OBS: pick a scene with Phone in its name. With Browser in its name, double-click the Browser source and pick the Chrome window</label>
+
+<div class="recipe">
+<h2>Older scenes</h2>
+<ul>
+<li><b>Long Take</b> is the Samsung, edge to edge</li>
+<li><b>Long Take + Phone</b> is the Samsung with the phone over its right edge</li>
+<li><b>Webcam + Phone</b>, <b>Phone + Browser</b>, <b>Webcam + Browser</b> and <b>Webcam + Phone + Browser</b> need only the laptop</li>
+</ul>
+<p>A laptop-only scene makes one file with nothing to sync, so skip the camera lines, both claps, Auto Align and the backup-track mute.</p>
+</div>
+
+<h2>Camera take: start</h2>
+<label><input type="checkbox"> Camera record — <b>red frame</b> appears around the image</label>
+<label><input type="checkbox"> OBS → Start Recording</label>
+<label><input type="checkbox"> <b>Clap once</b>, near the mic</label>
+
+<div class="recipe">
+<h2>While recording — the five glances</h2>
+<ul>
+<li>Red frame still up (recording)</li>
+<li>AF box sitting on your eye (focus)</li>
+<li>No zebra stripes on your face (exposure)</li>
+<li>Audio meters moving (sound)</li>
+<li>Plug icon + battery steady (power)</li>
+</ul>
+</div>
+
+<h2>Camera take: stop</h2>
+<label><input type="checkbox"> <b>Clap again</b>, then stop the camera, then stop OBS</label>
+<label><input type="checkbox"> Copy the camera file from SD to the SSD</label>
+<label><input type="checkbox"> Phone mirror: unplug the phone, or <kbd>⌘</kbd> <kbd>Q</kbd> with its window in front</label>
+
+<h2>Edit</h2>
+<label><input type="checkbox"> <code>pbcopy &lt; ~/repos/video/finish/console_setup.py</code> → paste in Workspace → Console → Py3</label>
+<label><input type="checkbox"> Select both clips → right-click → <b>Auto Align Clips → Based on Waveform</b></label>
+<label><input type="checkbox"> Mute the backup audio track (OBS's if the mic fed the camera; the camera's if not)</label>
+<label><input type="checkbox"> <code>pbcopy &lt; ~/repos/video/finish/console_grade.py</code> → paste (LUT + color groups)</label>
+<label><input type="checkbox"> Color page → any camera clip → node dropdown → <b>Group Pre-Clip</b> → exposure and white balance, once</label>
+<label><input type="checkbox"> Cut: <kbd>T</kbd> <kbd>V</kbd> <kbd>U</kbd> <kbd>,</kbd> <kbd>.</kbd> then <kbd>C</kbd> — card: finish/cheatsheet.html</label>
+
+<h2>Ship</h2>
+<label><input type="checkbox"> Export 2160p, 50+ Mbps</label>
+<label><input type="checkbox"> Upload; after YouTube finishes processing, confirm the 4K option exists on the video</label>
+
+<div class="foot">
+Camera modes: s5iix-cheat-sheet.html · Keys: finish/cheatsheet.html · Anything broken: <code>capture/scripts/check.sh</code>, then CLAUDE.md's common tasks.
+</div>
+</body>
+</html>

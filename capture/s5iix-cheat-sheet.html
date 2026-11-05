@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S5IIx Cheat Sheet</title>
+<style>
+  :root {
+    --ink: #1a1d21;
+    --muted: #6a7178;
+    --paper: #f7f6f3;
+    --card: #ffffff;
+    --line: #e4e2dc;
+    --street: #b45309;
+    --street-bg: #fdf4e7;
+    --birds: #15803d;
+    --birds-bg: #edf7ef;
+    --land: #1d4ed8;
+    --land-bg: #eef2fc;
+    --video: #7c3aed;
+    --video-bg: #f4effc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 28px 24px 40px;
+    line-height: 1.45;
+  }
+  header { max-width: 1100px; margin: 0 auto 20px; }
+  h1 { font-size: 1.5rem; letter-spacing: -0.01em; }
+  .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+  .savebar {
+    max-width: 1100px; margin: 0 auto 24px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 16px; font-size: 0.88rem;
+  }
+  .savebar strong { font-weight: 650; }
+  .savebar .layout { margin-top: 6px; color: var(--muted); }
+  .grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 18px;
+  }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    overflow: hidden; break-inside: avoid;
+  }
+  .card h2 {
+    font-size: 1.02rem; padding: 12px 16px 11px;
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  }
+  .card h2 .slot {
+    font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em;
+    padding: 2px 9px; border-radius: 999px; color: #fff; white-space: nowrap;
+  }
+  .card h2 .dial {
+    font-size: 0.7rem; font-weight: 650; letter-spacing: 0.04em;
+    padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+    border: 1px solid currentColor; opacity: 0.75; margin-left: auto;
+  }
+  .street h2 { background: var(--street-bg); } .street .slot { background: var(--street); } .street .dial { color: var(--street); }
+  .birds  h2 { background: var(--birds-bg); }  .birds .slot  { background: var(--birds); }  .birds .dial  { color: var(--birds); }
+  .land   h2 { background: var(--land-bg); }   .land .slot   { background: var(--land); }   .land .dial   { color: var(--land); }
+  .video  h2 { background: var(--video-bg); }  .video .slot  { background: var(--video); }  .video .dial  { color: var(--video); }
+  .rows { padding: 6px 16px 14px; }
+  .row {
+    display: grid; grid-template-columns: 96px 1fr; gap: 12px;
+    padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 0.88rem;
+  }
+  .row:last-child { border-bottom: none; }
+  .k { color: var(--muted); font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 2px; }
+  .v strong { font-weight: 650; }
+  .path { display: block; color: var(--muted); font-size: 0.78rem; margin-top: 1px; }
+  .why { color: var(--muted); }
+  footer {
+    max-width: 1100px; margin: 24px auto 0; color: var(--muted); font-size: 0.8rem;
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .card { border-color: #ccc; }
+    .savebar { border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>LUMIX S5IIx Cheat Sheet</h1>
+  <p class="subtitle">Build each recipe with the dial position shown on its card, then save it to its slot. After that the C dial is all you touch.</p>
+</header>
+
+<div class="savebar">
+  <strong>Saving:</strong> configure the camera, then Setup (wrench) → Setting → <strong>Save to Custom Mode</strong> → pick the slot. Changes made while shooting in a C mode are temporary until you re-save over the slot.
+  <div class="layout"><strong>Slot layout:</strong> C1 SSD video &nbsp;·&nbsp; C2 long-record video (already saved) &nbsp;·&nbsp; C3-1 street &nbsp;·&nbsp; C3-2 birds &nbsp;·&nbsp; C3-3 landscape</div>
+</div>
+
+<div class="grid">
+
+  <!-- VIDEO — C1 -->
+  <section class="card video">
+    <h2><span class="slot">C1</span> Best Video → SSD <span class="dial">BUILD ON MOVIE</span></h2>
+    <div class="rows">
+      <div class="row"><span class="k">SSD prep</span><span class="v">Setup → Card/File → <strong>USB-SSD → ON</strong>, then <strong>USB-SSD Format</strong> in the same menu. SSD max 2TB, 10Gbps USB, short cable. <span class="why">SSD unlocks ProRes at full resolution and ALL-I 800Mbps.</span></span></div>
+      <div class="row"><span class="k">Format</span><span class="v">Rec. File Format <strong>Apple ProRes</strong>, quality <strong>ProRes 422 HQ</strong>. <strong>5.8K</strong> (up to 30p) for maximum detail, <strong>C4K</strong> when you want 50/60p.</span></div>
+      <div class="row"><span class="k">Color</span><span class="v">Photo Style <strong>V-Log</strong>, 10-bit. Turn on <strong>V-Log View Assist</strong> so the monitor shows a graded image.</span></div>
+      <div class="row"><span class="k">Exposure</span><span class="v">Manual. Shutter at <strong>1/(2× frame rate)</strong>: 1/50 for 24/25p, 1/100 for 50p. ND filter outdoors to hold that shutter.</span></div>
+      <div class="row"><span class="k">ISO</span><span class="v">Dual native in V-Log: <strong>640</strong> base, jump straight to <strong>4000</strong> in low light. Avoid the values between them.</span></div>
+      <div class="row"><span class="k">WB / AF</span><span class="v">White balance <strong>set manually per scene</strong>, never AWB mid-clip. AFC with human detection is reliable; MF for locked-off shots. E-Stabilization OFF on gimbal or tripod.</span></div>
+    </div>
+  </section>
+
+  <!-- STREET — C3-1 -->
+  <section class="card street">
+    <h2><span class="slot">C3-1</span> Street · Everyday · Family <span class="dial">BUILD ON M</span></h2>
+    <div class="rows">
+      <div class="row"><span class="k">Exposure</span><span class="v"><strong>1/250s</strong>, aperture at the lens's wide end (f/1.8&ndash;2.8 prime, f/4 zoom). <span class="why">M + Auto ISO because this body has no minimum shutter speed for Auto ISO; A mode drops to blur territory indoors.</span></span></div>
+      <div class="row"><span class="k">ISO</span><span class="v"><strong>AUTO</strong>, limits 100&ndash;6400. Exposure comp button still works in M + Auto ISO.<span class="path">Photo → Image Quality → ISO Sensitivity (Photo)</span></span></div>
+      <div class="row"><span class="k">Focus</span><span class="v">Lever to <strong>AFC</strong>. Detection <strong>ON</strong>, subject <strong>HUMAN</strong>, area <strong>Full Area</strong>; joystick picks between people.<span class="path">Photo → Focus → AF Detection Setting / Detecting Subject</span></span></div>
+      <div class="row"><span class="k">Drive</span><span class="v">Drive dial to <strong>Burst I</strong>, set to <strong>H</strong> (mechanical, ~7&ndash;9 fps).<span class="path">Photo → Others (Photo) → Burst Shot Setting</span></span></div>
+      <div class="row"><span class="k">Shutter</span><span class="v"><strong>MECH</strong>. <span class="why">Electronic bands under indoor LED light.</span><span class="path">Photo → Others (Photo) → Shutter Type</span></span></div>
+      <div class="row"><span class="k">Files</span><span class="v"><strong>RAW+FINE</strong>, size L, Photo Style Standard, AWB. Stabilizer Normal.</span></div>
+    </div>
+  </section>
+
+  <!-- BIRDS — C3-2 -->
+  <section class="card birds">
+    <h2><span class="slot">C3-2</span> Birds <span class="dial">BUILD ON M</span></h2>
+    <div class="rows">
+      <div class="row"><span class="k">Exposure</span><span class="v"><strong>1/2000s</strong> in flight, <strong>1/500s</strong> perched. Aperture wide open. <span class="why">Noise is recoverable, wing blur isn't.</span></span></div>
+      <div class="row"><span class="k">ISO</span><span class="v"><strong>AUTO</strong>, limits 100&ndash;12800.</span></div>
+      <div class="row"><span class="k">Focus</span><span class="v"><strong>AFC</strong>, subject <strong>ANIMAL</strong>, target parts <strong>EYE</strong>. Area <strong>Full Area</strong> in flight, <strong>1-Area</strong> perched. <span class="why">Animal eye AF needs S5IIx firmware 2.0+.</span></span></div>
+      <div class="row"><span class="k">Drive</span><span class="v">Drive dial to <strong>Burst II</strong>, set to <strong>SH PRE</strong>: 30 fps electronic, and it buffers up to 1.5s from half-press. Half-press while tracking, full press after the moment happens. Keep Burst I on H (mechanical) as the fallback under artificial light.</span></div>
+      <div class="row"><span class="k">Shutter</span><span class="v">SH forces electronic; fine in daylight. Fast UHS-II card recommended, the buffer fills quickly at 30 fps.</span></div>
+      <div class="row"><span class="k">Files</span><span class="v"><strong>RAW+FINE</strong>, size L. Stabilizer Normal, lens OIS on.</span></div>
+    </div>
+  </section>
+
+  <!-- LANDSCAPE — C3-3 -->
+  <section class="card land">
+    <h2><span class="slot">C3-3</span> Landscape · Architecture <span class="dial">BUILD ON A</span></h2>
+    <div class="rows">
+      <div class="row"><span class="k">Exposure</span><span class="v">Aperture <strong>f/5.6&ndash;f/8</strong> (sharpest range), f/11 only when depth demands it. <span class="why">Diffraction softens past f/11.</span></span></div>
+      <div class="row"><span class="k">ISO</span><span class="v">Fixed <strong>100</strong>. No Auto.</span></div>
+      <div class="row"><span class="k">Focus</span><span class="v">Lever to <strong>AFS</strong>, area <strong>1-Area</strong>, placed a third into the scene. MF + peaking for tripod work.</span></div>
+      <div class="row"><span class="k">Drive</span><span class="v">Drive dial to <strong>self-timer, 2s</strong> handheld. For maximum detail: drive dial to <strong>High Resolution mode</strong> (96MP). Handheld High-Res ON off-tripod; OFF on a tripod, where exposures up to 8s are allowed.</span></div>
+      <div class="row"><span class="k">Shutter</span><span class="v"><strong>ELEC</strong>. <span class="why">Zero vibration, and nothing moves fast enough to skew.</span></span></div>
+      <div class="row"><span class="k">Files</span><span class="v"><strong>RAW+FINE</strong>, AWB (RAW keeps WB editable). Stabilizer <strong>OFF on tripod</strong>, Normal handheld. Turn on grid + level gauge for verticals.</span></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  C3 slots: turn the dial to C3, press MENU/SET, pick the numbered set; the dial remembers the last one used. Rename sets via Setup → Setting → Save to Custom Mode → Edit Title. Firmware check: Setup → Others → Firmware Version. Animal eye AF and SH PRE need S5IIx <strong>v2.0+</strong> (Apr 2024); handheld High-Res needs <strong>v1.3+</strong> (Oct 2023). Verified against Panasonic docs, Sep 2026.
+</footer>
+
+</body>
+</html>

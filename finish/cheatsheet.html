@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Resolve Keys — My Keyboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: -apple-system, "Helvetica Neue", sans-serif; color: #111; background: #fff;
+         padding: 28px 34px; max-width: 980px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 2px; }
+  .sub { color: #555; font-size: 13px; margin-bottom: 20px; }
+  h2 { font-size: 15px; margin: 18px 0 8px; border-bottom: 2px solid #111; padding-bottom: 3px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .combo { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+  kbd { display: inline-block; min-width: 30px; text-align: center; padding: 4px 7px;
+        border: 1.5px solid #111; border-radius: 6px; box-shadow: 0 2px 0 #111;
+        font: 700 14px/1 -apple-system, sans-serif; background: #fff; }
+  .lbl { font-size: 12.5px; line-height: 1.25; }
+  .recipe { border: 2.5px solid #111; border-radius: 10px; padding: 14px 16px; margin: 16px 0;
+            background: #f4f4f4; }
+  .recipe h2 { border: none; margin: 0 0 8px; padding: 0; font-size: 16px; }
+  .recipe ol { padding-left: 20px; font-size: 13.5px; line-height: 1.7; }
+  .recipe .why { font-size: 12px; color: #444; margin-top: 6px; }
+  .foot { margin-top: 18px; font-size: 11.5px; color: #555; line-height: 1.5; }
+  @media print { body { padding: 0; } .recipe { background: #fff; } }
+</style>
+</head>
+<body>
+<h1>DaVinci Resolve — My Keyboard</h1>
+<div class="sub">Preset "My Keyboard" · restore: finish/README.md · full 588-action list: keymap_full.tsv</div>
+
+<div class="recipe">
+<h2>Ripple trim — grow or shrink a clip, timeline follows</h2>
+<ol>
+<li><kbd>T</kbd> enter Trim Mode (in Normal mode the same keys leave a gap)</li>
+<li><kbd>V</kbd> grab the nearest edit point</li>
+<li><kbd>U</kbd> cycle which side you're trimming: clip-start / clip-end / both (roll)</li>
+<li><kbd>,</kbd> <kbd>.</kbd> trim one frame left / right — the timeline shifts to match</li>
+<li><kbd>⇧,</kbd> <kbd>⇧.</kbd> same, five frames at a time</li>
+<li><kbd>C</kbd> back to Normal (pointer) mode</li>
+</ol>
+<div class="why">With start or end selected it ripples (timeline shifts). With both sides (roll) the cut moves, timeline length stays. Big jumps: park the playhead where the edit should land, then <kbd>A</kbd>/<kbd>D</kbd> below.</div>
+</div>
+
+<h2>Cut &amp; trim (left hand)</h2>
+<div class="grid">
+<span class="combo"><kbd>A</kbd><span class="lbl">Ripple trim clip start → playhead</span></span>
+<span class="combo"><kbd>S</kbd><span class="lbl">Razor cut at playhead</span></span>
+<span class="combo"><kbd>D</kbd><span class="lbl">Ripple trim clip end → playhead</span></span>
+<span class="combo"><kbd>F</kbd><span class="lbl">Match frame</span></span>
+<span class="combo"><kbd>T</kbd><span class="lbl">Trim Mode</span></span>
+<span class="combo"><kbd>C</kbd><span class="lbl">Normal (pointer) mode</span></span>
+<span class="combo"><kbd>B</kbd><span class="lbl">Blade mode</span></span>
+<span class="combo"><kbd>⇧[</kbd><span class="lbl">Trim start (default twin of A)</span></span>
+<span class="combo"><kbd>⇧]</kbd><span class="lbl">Trim end (default twin of D)</span></span>
+<span class="combo"><kbd>⌘B</kbd><span class="lbl">Razor (default twin of S)</span></span>
+</div>
+
+<h2>Transport</h2>
+<div class="grid">
+<span class="combo"><kbd>J</kbd><span class="lbl">Play reverse</span></span>
+<span class="combo"><kbd>K</kbd><span class="lbl">Stop</span></span>
+<span class="combo"><kbd>L</kbd><span class="lbl">Play forward</span></span>
+<span class="combo"><kbd>Space</kbd><span class="lbl">Play / stop</span></span>
+<span class="combo"><kbd>W</kbd><span class="lbl">Step 1 frame back</span></span>
+<span class="combo"><kbd>E</kbd><span class="lbl">Step 1 frame forward</span></span>
+<span class="combo"><kbd>G</kbd><span class="lbl">Previous clip</span></span>
+<span class="combo"><kbd>H</kbd><span class="lbl">Timeline start</span></span>
+<span class="combo"><kbd>;</kbd><span class="lbl">Clip first frame</span></span>
+<span class="combo"><kbd>'</kbd><span class="lbl">Clip last frame</span></span>
+<span class="combo"><kbd>/</kbd><span class="lbl">Play around selection</span></span>
+</div>
+
+<h2>Marks, view, modes</h2>
+<div class="grid">
+<span class="combo"><kbd>I</kbd><span class="lbl">Mark in</span></span>
+<span class="combo"><kbd>O</kbd><span class="lbl">Mark out</span></span>
+<span class="combo"><kbd>X</kbd><span class="lbl">Mark clip (in+out from clip)</span></span>
+<span class="combo"><kbd>M</kbd><span class="lbl">Add marker</span></span>
+<span class="combo"><kbd>Q</kbd><span class="lbl">Source / timeline viewer</span></span>
+<span class="combo"><kbd>Z</kbd><span class="lbl">Zoom viewer to fit</span></span>
+<span class="combo"><kbd>N</kbd><span class="lbl">Snapping on/off</span></span>
+<span class="combo"><kbd>P</kbd><span class="lbl">Append clip at end</span></span>
+<span class="combo"><kbd>Y</kbd><span class="lbl">Select track right of playhead</span></span>
+<span class="combo"><kbd>R</kbd><span class="lbl">Range selection (see note)</span></span>
+</div>
+
+<div class="foot">
+All unmodified home-area keys are now bound (T and C were the last two, added 2026-09-01).<br>
+Note: the preset shows R bound to both Range Selection and Change Clip Speed; press R in Resolve once to see which wins, then rebind the loser.
+</div>
+</body>
+</html>
