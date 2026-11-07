@@ -54,14 +54,15 @@ if pgrep -x OBS >/dev/null; then
 fi
 
 # A project is wherever its folder is. A new one starts in drafting with a
-# write-up and an app. See content/drafting/CLAUDE.md in the site.
+# write-up, an app and the next number. See content/drafting/CLAUDE.md in the site.
 project=$(ls -d "$SITE"/content/*/"$name" 2>/dev/null | head -n 1)
 claude_cmd="claude --continue || claude"
 if [ -z "$project" ]; then
     project="$SITE/content/drafting/$name"
+    number=$(grep -rhs '^number = ' "$SITE/content" | awk '$3 > m { m = $3 } END { print m + 1 }')
     mkdir -p "$project/app" || exit 1
     title=$(printf '%s' "$name" | tr '-' ' ' | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }')
-    printf '+++\ntitle = "%s"\ndate = %s\ndraft = true\n[extra]\napp = true\n+++\n' "$title" "$(date +%F)" > "$project/index.md"
+    printf '+++\ntitle = "%s"\ndate = %s\ndraft = true\n[extra]\nnumber = %s\napp = true\n+++\n' "$title" "$(date +%F)" "$number" > "$project/index.md"
     printf '+++\ntitle = "%s"\ntemplate = "app.html"\ndraft = true\n+++\n' "$title" > "$project/app/index.md"
     claude_cmd="claude"
 fi
