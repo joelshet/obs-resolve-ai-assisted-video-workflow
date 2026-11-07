@@ -2,14 +2,17 @@
 # shoot — start building and recording a project in one command.
 #
 #   shoot corner-bracket
+#   AGENT=opencode shoot corner-bracket
 #
 # Takes go in the working folder's inbox/.
 # Finds the project on joelshetler.com or starts a draft, serves the site with
-# live reload, opens Ghostty on the left with Claude in the project folder,
+# live reload, opens Ghostty on the left with an AI agent in the project folder,
 # opens its app on the right, mirrors the phone if one is on USB, points OBS at
 # those windows and starts recording. Run it again later to resume: the page
-# stays, Claude continues, and a new take starts. Anything already running is
-# left alone. Layout numbers are under "Shoot" in rig/setup.md.
+# stays, the agent continues, and a new take starts. Anything already running is
+# left alone. AGENT names the agent's command, the way EDITOR names an editor: claude,
+# opencode, codex or any other. It defaults to claude. Layout numbers are under "Shoot" in
+# rig/setup.md.
 set -u
 REPO="$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)"
 OBS="$REPO/capture/scripts/obs.py"
@@ -42,7 +45,8 @@ name=$1
 case $name in
     *[!a-z0-9-]*|-*|"") echo "shoot: NAME is lowercase letters, digits and hyphens" >&2; exit 2 ;;
 esac
-for tool in zola claude; do
+AGENT=${AGENT:-claude}
+for tool in zola "${AGENT%% *}"; do
     command -v "$tool" >/dev/null 2>&1 || { echo "shoot: $tool not found" >&2; exit 1; }
 done
 [ -d "$WORK/inbox" ] || { echo "shoot: no $WORK/inbox" >&2; exit 1; }
@@ -54,9 +58,10 @@ if pgrep -x OBS >/dev/null; then
 fi
 
 # A project is wherever its folder is. A new one starts in drafting with a
-# write-up, an app and the next number. See content/drafting/CLAUDE.md in the site.
+# write-up, an app and the next number. See content/drafting/ in the site.
 project=$(ls -d "$SITE"/content/*/"$name" 2>/dev/null | head -n 1)
-claude_cmd="claude --continue || claude"
+# Resuming asks the agent to continue its last session, and starts a new one if it can't.
+agent_cmd="$AGENT --continue || $AGENT"
 if [ -z "$project" ]; then
     project="$SITE/content/drafting/$name"
     number=$(grep -rhs '^number = ' "$SITE/content" | awk '$3 > m { m = $3 } END { print m + 1 }')
@@ -64,7 +69,7 @@ if [ -z "$project" ]; then
     title=$(printf '%s' "$name" | tr '-' ' ' | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) }')
     printf '+++\ntitle = "%s"\ndate = %s\ndraft = true\n[extra]\nnumber = %s\napp = true\n+++\n' "$title" "$(date +%F)" "$number" > "$project/index.md"
     printf '+++\ntitle = "%s"\ntemplate = "app.html"\ndraft = true\n+++\n' "$title" > "$project/app/index.md"
-    claude_cmd="claude"
+    agent_cmd="$AGENT"
 fi
 
 # A date in the folder name is what cut/scripts/ingest.py reads. Later takes of
@@ -130,7 +135,7 @@ if ! pgrep -f "Ghostty.*--working-directory=$project" >/dev/null; then
         --window-position-x="$LEFT_X" --window-position-y=0 \
         --window-width="$COLS" --window-height="$ROWS" --font-size=16 --window-padding-x=16 --window-padding-y=12 \
         --background=000000 --foreground=ffffff --macos-titlebar-style=hidden --window-save-state=never --macos-window-shadow=false \
-        --initial-command="/bin/zsh -lc '$claude_cmd; exec zsh -l'"
+        --initial-command="/bin/zsh -lc '$agent_cmd; exec zsh -l'"
 fi
 
 system_profiler SPUSBDataType 2>/dev/null | grep -q "Shure MV7" ||

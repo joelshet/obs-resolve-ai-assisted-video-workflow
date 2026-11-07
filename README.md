@@ -1,19 +1,21 @@
 # OBS + Resolve, AI-assisted video workflow
 
-Tools for making a video, from pressing record to the final export: OBS scenes driven by script, a Claude-run rough cut in DaVinci Resolve, and text animation rendered from reveal.js. Each stage is a folder, and each folder's README is its manual.
+Tools for making a video, from pressing record to the final export: OBS scenes driven by script, an agent-run rough cut in DaVinci Resolve, and text animation rendered from reveal.js. Each stage is a folder, and each folder's README is its manual.
 
 | Stage | Folder | What's in it |
 |---|---|---|
-| Capture | [capture/](capture/README.md) | `shoot` (one command to build something with Claude and record it), OBS scripting, the phone mirror, the config check, printable cards |
+| Capture | [capture/](capture/README.md) | `shoot` (one command to build something with an AI agent and record it), OBS scripting, the phone mirror, the config check, printable cards |
 | Animate | [animate/](animate/README.md) | Text and motion built as a reveal.js deck and rendered to video, frame by frame, with sound |
-| Cut | [cut/](cut/README.md) | Media management, transcripts, rough cuts and Resolve project setup, run by Claude |
+| Cut | [cut/](cut/README.md) | Media management, transcripts, rough cuts and Resolve project setup, run by an AI agent |
 | Finish | [finish/](finish/README.md) | The final pass in DaVinci Resolve: keyboard preset, keys card, console scripts |
 
 A rendered deck is a clip like any other. A long take and a video built clip by clip go through the same stages. `cut/scripts/ingest.py` takes a dated folder of clips or loose files from the inbox.
 
+Any AI agent that can run commands and read files can drive it: Claude Code, OpenAI Codex, OpenCode or another. `AGENTS.md` holds the agent's instructions, and `animate/SKILL.md` and `cut/SKILL.md` are the two recipes. `shoot` starts the agent named in `AGENT` (default `claude`).
+
 ## Design
 
-Unix-style, in every stage. Each tool does one thing, takes explicit arguments or stdin, writes to stdout, and holds no state. There is no manifest and no config file. The filesystem is the state, and Claude is the shell. A new tool goes in its stage's folder and follows the same rules.
+Unix-style, in every stage. Each tool does one thing, takes explicit arguments or stdin, writes to stdout, and holds no state. There is no manifest and no config file. The filesystem is the state, and the agent is the shell. A new tool goes in its stage's folder and follows the same rules.
 
 ## The working folder
 
@@ -25,7 +27,7 @@ videos/       one folder per video: footage/ transcripts/ graphics/ resolve/ exp
 rig/          setup.md, LOOK.md, obs/ (known-good OBS files), luts/,
               templates/ (Resolve .drp, brand.json, vocab.json)
 .claude/skills/
-              links to animate/ and cut/ here, so Claude Code lists both skills
+              links to animate/ and cut/ here, for agents that read skills from there
 ```
 
 [cut/sample/](cut/sample/2026-01-15-acme-sync-demo/README.md) is a synthetic video folder showing what the cut stage generates. Media is gitignored, so only the text artifacts are here.

@@ -17,7 +17,7 @@ Variants (cycle them across a video's cards):
 Hook cards use the thumbnail treatment (SEO/API-first): --marks a.png,b.png
 (row with a thin arrow), --pre "Connect to the", the dominant title in the
 product's brand color via --title-color, sized up via --title-scale, and
---subtitle "No Python. Just Claude." Step/end cards keep --eyebrow.
+--subtitle "No Python. Just an agent." Step/end cards keep --eyebrow.
 """
 import argparse
 import subprocess

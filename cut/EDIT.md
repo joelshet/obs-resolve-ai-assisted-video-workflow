@@ -102,9 +102,9 @@ Everything in writing, now:
   description (note-carrying markers never become chapters).
 - `exports/youtube-metadata.txt`: TITLE A / TITLE B / DESCRIPTION / TAGS /
   THUMBS, paste-ready. SEO-first and API-first: the product API is the
-  subject, Claude is the method; both titles carry the query ("How to
-  connect to the <Product> API with Claude" vs "Connect to the <Product>
-  API (no Python, just Claude)"), each naming its A/B axis. Every claim
+  subject, the agent is the method; both titles carry the query ("How to
+  connect to the <Product> API with an agent" vs "Connect to the <Product>
+  API (no Python, just an agent)"), each naming its A/B axis. Every claim
   must be literally true of the video; when punchy and true conflict, true
   wins. Zero errors from the prose linter, if one is configured. No
   chapter list in the description.
@@ -207,7 +207,7 @@ size; iterate before showing the user.
 
 - This workflow targets Resolve free: the console paste is the only
   automation; never suggest external scripting or the MCP server. If
-  mlx_whisper won't import (sandbox), have the user run ingest via Claude
+  mlx_whisper won't import (sandbox), have the user run ingest through the agent
   Code on their Mac.
 - This ffmpeg has no libass. Burned-in or karaoke captions are Pillow
   caption-state PNGs on a concat-demuxer alpha track (whole-word pops, the

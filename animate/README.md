@@ -41,7 +41,7 @@ In a browser the sound plays live after the first click or key press. In a rende
 | `scripts/cdp.py` | Talks to headless Chrome over a pipe. Stdlib only |
 | `reveal/` | reveal.js 5.1.0 (`reset.css`, `reveal.css`, `reveal.js`), vendored so decks work offline |
 | `example.html` | A three-slide deck with auto-animate, fragments and a CSS animation. A renderer test, not a model for the look |
-| `SKILL.md` | The recipe Claude follows for "animate this", linked into `.claude/skills/` |
+| `SKILL.md` | The recipe an agent follows for "animate this", linked into `.claude/skills/` |
 
 A deck outside this repo loads reveal and `sound.js` by absolute file URL, for example `file:///Users/joel/repos/video/animate/reveal/reveal.js`.
 

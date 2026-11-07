@@ -2,16 +2,16 @@
 
 Automated DaVinci project setup.
 
-Say "I just finished recording, set up the DaVinci project" to Claude
-(Claude Code or Cowork) from the working folder and the pipeline does the
+Say "I just finished recording, set up the DaVinci project" to an AI agent
+(Claude Code, Codex, OpenCode or another) from the working folder and the pipeline does the
 rest. A Zed task in the working folder ("Go" in `.zed/tasks.json`) runs
-`claude "New video in inbox"` in a new terminal for one-keystroke starts.
+an agent with "New video in inbox" in a new terminal for one-keystroke starts.
 
 ## Design
 
 Unix-style: each tool does one thing, takes explicit args or stdin/stdout,
 and holds no state — there is no manifest, no config, no root-finding magic.
-The filesystem is the state; Claude is the shell. Layout, naming, and all
+The filesystem is the state; the agent is the shell. Layout, naming, and all
 editorial judgment (sections, cards, cut lists) live in SKILL.md prose.
 
 ```
@@ -40,7 +40,7 @@ everything mechanical, then the track decides: SEO tutorials go straight
 to the ultra cut, brand videos get 2–3 pitched concepts and the expensive
 edit work happens only on the one you pick.
 
-## The ritual (after Claude runs the pipeline)
+## The ritual (after the agent runs the pipeline)
 
 1. Double-click `videos/<slug>/resolve/<slug>.drp` → Resolve opens the project
 2. Workspace → Console → Py3 → paste `resolve/setup.py` → the timelines
@@ -69,7 +69,7 @@ Timeline; captions via media pool right-click → Import Subtitle →
   this repo, beside `cut/`: `python3 -m venv .venv && .venv/bin/pip install mlx-whisper`.
   The scripts find it there on their own; models are cached on first run,
   so it works offline afterward.
-- `pip3 install pillow numpy` for cards + activity maps (Claude Code can
+- `pip3 install pillow numpy` for cards + activity maps (an agent can
   do this)
 - Tweak the title card look in `rig/templates/brand.json` (placeholder tokens;
   colors are RGBA, fonts are tried in order — list your brand font first,
